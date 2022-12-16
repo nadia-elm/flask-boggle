@@ -2,23 +2,25 @@
 {% block title %}game{% endblock %}
 
 {% block content %}
+<div class='container'>
 <table>
     <tbody>
         {% for row in board %}
 
         <tr>
             {% for cell in row %}
-              <td>{{ cell }}</td>
+              <td id="cell">{{ cell }}</td>
             {% endfor %}
         </tr>
 
         {% endfor %}
     </tbody>
 </table>
-<form id="guessForm"   method="post">
+<form id="guessForm" action="/check_word"  >
     <input  id="word" type="text" name="guess" placeholder="Enter a word  ">
-    <button>submit</button>
+    <button id="submitBtn">submit</button>
 </form>
+</div>
 
 <script src="http://unpkg.com/jquery"></script>
 <script src="https://unpkg.com/axios@0.19.0/dist/axios.js"></script>

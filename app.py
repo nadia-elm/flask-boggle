@@ -10,21 +10,16 @@ app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 debug = DebugToolbarExtension(app)
 
 @app.route('/')
-def home_page():
-    board = boggle_game.make_board()
-    session['board'] = board
-    return render_template('board.html',board = board)
+def game_page():
+    current_board = boggle_game.make_board()
+    session['board']= current_board
+    return render_template('board.html', board = current_board)
 
-# @app.route('/start_Game', methods=["POST"])
-# def display_board():
-#     board= boggle_game.make_board()
-#     session['board']= board 
-#     return render_template('board.html',board= board)
 
-@app.route('/check-guess')
-def check_guess():
-    guess = request.args['guess']
-    board = session['board']
-    res = boggle_game.check_valid_word(board,guess)
-    # return jsonify({'result' : res})
-    return "<h1>hello {guess} </h1>"
+@app.route('/check_word',methods=['GET'])
+def check():
+    current_board = session['board']
+    word = request.args.get('guess')
+    result = boggle_game. check_valid_word(current_board, word)
+    
+    return jsonify({'result' : result})
