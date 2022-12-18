@@ -16,10 +16,13 @@ def game_page():
     return render_template('board.html', board = current_board)
 
 
-@app.route('/check_word',methods=['GET'])
+@app.route('/check_word')
 def check():
-    current_board = session['board']
-    word = request.args.get('guess')
-    result = boggle_game. check_valid_word(current_board, word)
     
-    return jsonify({'result' : result})
+        current_board = session['board']
+        word = request.args.get('guess')
+        result = boggle_game. check_valid_word(current_board, word)
+        response =  jsonify ({ word : result})
+        return response
+        # return jsonify({'result' : result})
+        

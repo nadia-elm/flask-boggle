@@ -23,17 +23,16 @@ let submitBtn =document.getElementById('submitBtn')
 async function checkWord(){
   let word = $guess.val()
   const res = await axios.get('/check_word',{params:{word :word}})
-  // return res
+  return res
   
 }
 
-// async function displayResult(){
-//   await checkWord()
-//   console.log(res.data.result)
-// }
-
- $Form.on('submit',checkWord)
-// // $Form.on('submit', function(e){
-// //   e.preventDefault()
-// //   checkWord
-// // })
+async function displayResult(){
+  await checkWord()
+  console.log(res.data.result)
+}
+$Form.on('submit',displayResult)
+// $Form.on('submit', function(e){
+//   e.preventDefault()
+//   displayResult()
+// })
