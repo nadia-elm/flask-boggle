@@ -1,38 +1,80 @@
 
 
 let $Form = $('#guessForm')
+let $score = $('#score')
+let $results = $('#results')
+let score = 0
+let $timer = $("#timer")
+let seconds = 30
+let $input = $("#word")
+ let $guess = $("#word").val();
+let $startBtn =$('#start')
 
-let $guess = $('#word')
-let submitBtn =document.getElementById('submitBtn')
-
-
-
-// submitBtn.addEventListener('click',async function(e){
-//   e.preventDefault();
-//   // let word = $guess.val();
-//   let response = await checkWord();
-//   console.log(response)
-// })
-// // $Form.on('submit',function(e){
-//   e.preventDefault()
-//   let word = $guess.val();
-//   console.log(word)
-// })
+$startBtn.on('click',function(e){
+  e.preventDefault()
+  timer()
+})
 
 
-async function checkWord(){
-  let word = $guess.val()
-  const res = await axios.get('/check_word',{params:{word :word}})
-  return res
-  
+
+
+
+function timer(){
+  setInterval(() => {
+    if( seconds > 0 ){
+      seconds--
+      $timer.text(`Time Remaining : ${seconds}`)
+      $input.show()
+    }
+    else{
+      clearInterval()
+      // $input.hide()
+      window.location.reload()
+
+
+    }
+
+},1000)
 }
 
-async function displayResult(){
-  await checkWord()
-  console.log(res.data.result)
+$Form.submit(async function (evt){
+  evt.preventDefault()
+   $guess = $("#word").val();
+  let res = await axios.get('/check_word', {params : {'guess' : $guess}})
+  let response = res.data.result 
+  checkWord(response)
+   $input.val('');
+ 
+})
+
+function checkWord(result){
+  if(result == 'ok'){
+    $results.text(' correct  word!')
+    score += $guess.length;
+    $score.text(`Score is : ${score}`)
+     
+  }
+  else if ( result == 'not-on-board'){
+    $results.text( `${$guess} not-on-board `)
+      
+  }
+  else{
+    $results.text(`${$guess}  is not-word`)
+      
+  } 
+ 
 }
-$Form.on('submit',displayResult)
-// $Form.on('submit', function(e){
-//   e.preventDefault()
-//   displayResult()
-// })
+
+
+async function saveScore(){
+  await axios.post('/check_score', {
+    params :{
+      'score' : score
+    }
+  })
+}
+ 
+
+
+
+

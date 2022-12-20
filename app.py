@@ -20,9 +20,16 @@ def game_page():
 def check():
     
         current_board = session['board']
+        session['score']
         word = request.args.get('guess')
         result = boggle_game. check_valid_word(current_board, word)
-        response =  jsonify ({ word : result})
-        return response
+        # response =  jsonify ({ word : result})
+        return jsonify(result = result)
         # return jsonify({'result' : result})
+
+@app.route('/check_score',methods=['POST'])
+def check_score():
+    session['score']
+    
+
         
